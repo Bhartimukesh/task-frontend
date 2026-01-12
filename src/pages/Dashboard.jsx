@@ -4,29 +4,22 @@ import TaskList from "../components/TaskList";
 import EditTaskModal from "../components/EditTaskModal";
 
 export default function Dashboard() {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [refresh, setRefresh] = useState(0);
   const [editTask, setEditTask] = useState(null);
 
   return (
-    <div style={page}>
+    <>
       <h2>Task Dashboard</h2>
-
-      <AddTask refresh={() => setRefreshKey(k => k + 1)} />
-
-      <TaskList
-        refreshKey={refreshKey}
-        onEdit={(task) => setEditTask(task)}
-      />
-
+      <AddTask refresh={() => setRefresh(r => r + 1)} />
+      <TaskList refreshKey={refresh} onEdit={setEditTask} />
       {editTask && (
         <EditTaskModal
           task={editTask}
           close={() => setEditTask(null)}
-          refresh={() => setRefreshKey(k => k + 1)}
+          refresh={() => setRefresh(r => r + 1)}
         />
       )}
-    </div>
+    </>
   );
 }
 
-const page = { maxWidth: 500, margin: "40px auto" };

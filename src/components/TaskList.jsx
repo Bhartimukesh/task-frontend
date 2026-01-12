@@ -5,22 +5,16 @@ import TaskItem from "./TaskItem";
 export default function TaskList({ refreshKey, onEdit }) {
   const [tasks, setTasks] = useState([]);
 
-  const loadTasks = () => {
-    API.get("/tasks").then(res => setTasks(res.data));
-  };
+  const load = () => API.get("/tasks").then(r => setTasks(r.data));
+  useEffect(load, [refreshKey]);
 
-  useEffect(loadTasks, [refreshKey]);
-
-  const deleteTask = async (id) => {
+  const del = async (id) => {
     await API.delete(`/tasks/${id}`);
-    loadTasks();
+    load();
   };
 
-  return (
-    <>
-      {tasks.map(t => (
-        <TaskItem key={t._id} task={t} onDelete={deleteTask} onEdit={onEdit} />
-      ))}
-    </>
-  );
+  return tasks.map(t => (
+    <TaskItem key={t.id} task={t} onDelete={del} onEdit={onEdit} />
+  ));
 }
+
